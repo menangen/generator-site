@@ -1,0 +1,15 @@
+{
+  "name": "generator-sass-less-bootstrap",
+  "version": "0.0.1",
+  "description": "Static page with less or sass and Bootstrap 3",
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "yeoman-generator": "^1.0.0"
+  }
+}

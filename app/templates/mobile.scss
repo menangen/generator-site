@@ -1,0 +1,23 @@
+@mixin mobile-iphone-6s {
+  @media(max-width: 375px) {@content;}
+}
+
+@mixin mobile-iphone-6plus {
+  @media(max-width: 414px) {@content;}
+}
+
+@mixin mobile-iphone {
+  @media(max-width: 320px) {@content;}
+}
+
+@mixin mobile-ipad {
+  @media(max-width: 1024px) {@content;}
+}
+
+@mixin mobile-640 {
+  @media(max-width: 640px) {@content;}
+}
+
+@mixin mobile-320 {
+  @media(max-width: 320px) {@content;}
+}

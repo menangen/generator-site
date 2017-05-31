@@ -1,0 +1,22 @@
+<% if (bootsrap) { %>@import "bootstrap";<% } %>
+@import "mobile";
+
+$green-grass: #AF0;
+$violet: #a643f9;
+$orange: #F90;
+
+h1 {
+  color: #7b92a8;
+
+  @include mobile-640 {
+    color: $green-grass;
+  }
+
+  @include mobile-320 {
+    color: $violet;
+  }
+}
+
+span {
+  @include mobile-iphone-6plus { color: $orange };
+}

@@ -1,0 +1,28 @@
+{
+  "name": "<%= projectName %>",
+  "version": "0.1.0",
+  "description": "Static Website",
+  "main": "index.js",
+  "scripts": {
+    "pug": "pug src/pug/ --out dist/ --pretty",
+    "pug:watch": "pug --out dist/ --pretty --watch src/pug/",<% if (less) { %>
+    "less": "lessc src/less/styles.less dist/css/styles.css<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>",
+    "less:watch": "./node_modules/.bin/watch --interval=0.3 'echo Less files compiling && lessc src/less/styles.less dist/css/styles.css --include-path=node_modules/bootstrap-less' src/less",<% } %><% if (sass) { %>
+    "sass": "node-sass src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",
+    "sass:watch": "node-sass --watch src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",<% } %>
+    "watch": "concurrently \"npm run <% if (less) { %>less<% } %><% if (sass) { %>sass<% } %>:watch\" \"npm run pug:watch\"",
+    "build": "npm run pug && npm run <% if (less) { %>less<% } %><% if (sass) { %>sass<% } %>"
+  },
+  "author": "Anna Novikova",
+  "license": "ISC",
+  "devDependencies": {<% if (less) { %>
+    "less": "^2.7.2",
+    "watch": "^1.0.2",<% if (bootsrap) { %>
+    "bootstrap-less": "^3.3.8",<% }} %><% if (sass) { %>
+    "node-sass": "^4.5.3",<% if (bootsrap) { %>
+    "bootstrap-sass": "^3.3.7",<% }} %>
+    "concurrently": "^3.4.0",
+    "pug": "^2.0.0-rc.1",
+    "pug-cli": "^1.0.0-alpha6"
+  }
+}
