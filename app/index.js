@@ -186,7 +186,10 @@ module.exports = class extends Generator {
             this.fs.copyTpl(
                 this.templatePath("javascript/main.js"),
                 this.destinationPath("src/javascript/main.js"),
-                { javascript: this.javascript }
+                {
+                    projectName: this.projectName,
+                    javascript: this.javascript
+                }
             );
             // handlers
             this.fs.copyTpl(

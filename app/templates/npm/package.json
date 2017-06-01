@@ -26,9 +26,12 @@
     "bootstrap-sass": "^3.3.7",<% }} %><% if (javascript) { %>
     "rollup": "^0.41.6",
     "rollup-watch": "^3.2.2",<% if (javascript === 'vue' || javascript === 'preact') { %>
-    "rollup-plugin-alias": "^1.3.1",<% if (javascript === 'vue') { %>
+    "rollup-plugin-node-resolve": "^3.0.0",<% if (javascript === 'vue') { %>
     "rollup-plugin-vue": "^2.4.0",
-    "vue": "^2.3.3",<% if (javascript === 'preact') { %><% }}}} %>
+    "vue": "^2.3.3",<% } %><% if (javascript === 'preact') { %>
+    "rollup-plugin-babel": "^2.7.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "preact": "^8.1.0",<% }}} %>
     "http-server": "^0.10.0",
     "concurrently": "^3.4.0",
     "pug": "^2.0.0-rc.1",
