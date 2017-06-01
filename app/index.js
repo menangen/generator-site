@@ -42,7 +42,18 @@ module.exports = class extends Generator {
             {
                 type: "expand",
                 name: "javascript",
-                message: "Will you use Javascript with modules/frameworks?",
+                message:
+                    "Would you like to setup Javascript with Rollup and js Framework?\n" +
+                    chalk.yellow(
+                        'Rollup (y)\t'
+                    )
+                    +chalk.red(
+                        'No javascript (n)\t'
+                    )
+                    +chalk.green(
+                        'Vue (v)\t'
+                    )
+                    +chalk.green('Preact (p)\n'),
                 choices: [
 
                     {
@@ -89,7 +100,7 @@ module.exports = class extends Generator {
                     this.installLess = answers.css === "Less";
                     this.installSass = answers.css === "Sass";
                     this.installBootstrap = answers.bootstrap;
-                    this.javascript = answers.javascript !== "no";
+                    this.javascript = answers.javascript !== "no" ? answers.javascript: false;
                     this.installGit = answers.git;
                     this.runNPM = answers.npm;
 
@@ -166,14 +177,16 @@ module.exports = class extends Generator {
                 this.templatePath("rollup/rollup.config.js"),
                 this.destinationPath("rollup.config.js"),
                 {
-                    projectName: this.projectName
+                    projectName: this.projectName,
+                    javascript: this.javascript
                 }
             );
             /* Javascript ES6 modules */
             // main
             this.fs.copyTpl(
                 this.templatePath("javascript/main.js"),
-                this.destinationPath("src/javascript/main.js")
+                this.destinationPath("src/javascript/main.js"),
+                { javascript: this.javascript }
             );
             // handlers
             this.fs.copyTpl(
@@ -183,8 +196,21 @@ module.exports = class extends Generator {
             // models
             this.fs.copyTpl(
                 this.templatePath("javascript/models.js"),
-                this.destinationPath("src/javascript/models.js")
+                this.destinationPath("src/javascript/models.js"),
+                {
+                    projectName: this.projectName
+                }
             );
+            // vue component
+            if (this.javascript === 'vue') {
+                this.fs.copyTpl(
+                    this.templatePath("javascript/components/app.vue"),
+                    this.destinationPath("src/javascript/components/app.vue"),
+                    {
+                        projectName: this.projectName
+                    }
+                );
+            }
         }
     }
 
