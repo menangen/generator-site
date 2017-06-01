@@ -8,11 +8,12 @@ html(lang="en")
         link(rel="stylesheet", href="css/styles.css")
         title
         script(type='text/javascript').
-            if (true) {
-                console.warn("remove me!")
-            }
-    body
+            function draw(){const e=document.createElement("canvas")
+            if(e.width=150,e.height=150,e.getContext){const t=e.getContext("2d")
+            t.strokeStyle="#1e284d";t.fillStyle="#c6bfee";t.fillRect(25,25,100,100);t.strokeRect(50,50,50,50)}
+            else alert("No canvas!");document.body.appendChild(e)}
 
+    body(onload="draw()")
         .container
             .row
                 .col-md-12
