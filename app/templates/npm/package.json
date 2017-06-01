@@ -6,7 +6,7 @@
   "scripts": {
     "pug": "pug src/pug/ --out dist/ --pretty",
     "pug:watch": "pug --out dist/ --pretty --watch src/pug/",
-    "serve": "http-server dist/ --silent -c 1 -o",<% if (javascript) { %>
+    "serve": "http-server --silent -c 1 -o",<% if (javascript) { %>
     "js": "rollup -c --sourcemap",
     "js:watch": "rollup -c -w --sourcemap",<% } %><% if (less) { %>
     "less": "lessc src/less/styles.less dist/css/styles.css --source-map<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>",

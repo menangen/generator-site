@@ -2,6 +2,7 @@
  * Created by menangen on 31.05.17.
  */
 const Generator = require("yeoman-generator");
+const path = require('path');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 
@@ -193,5 +194,24 @@ module.exports = class extends Generator {
         }
 
         if (this.runNPM) this.npmInstall();
+    }
+
+    end() {
+
+        if (this.runNPM) {
+            this.patchFile = this.fs.read(this.templatePath('patch/http_server.patch'));
+            const patchProcess = this.spawnCommand("patch", [
+                "node_modules/http-server/bin/http-server",
+                "-b"
+            ], {stdio: 'pipe'});
+
+            patchProcess.stdout.pipe(process.stdout);
+            patchProcess.stdin.write(this.patchFile);
+
+            patchProcess.stdin.end();
+        }
+        else {
+            this.log('http-server": "^0.10.0" has URL opening bug on Safari ', chalk.yellow("https://github.com/craigmichaelmartin/http-server/commit/1779827b911d7149d9918c1ba4881a583f77b841#diff-4ede5aceb32bc9cc9c1a5923aac46bda"));
+        }
     }
 };

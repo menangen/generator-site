@@ -1,0 +1,19 @@
+--- http-server.origin	2017-06-01 14:34:55.000000000 +0300
++++ http-server	2017-06-01 14:36:22.000000000 +0300
+@@ -148,10 +148,12 @@
+ 
+     logger.info('Hit CTRL-C to stop the server');
+     if (argv.o) {
+-      opener(
+-        protocol + '//' + canonicalHost + ':' + port,
+-        { command: argv.o !== true ? argv.o : null }
+-      );
++        var openUrl = protocol + canonicalHost + ':' + port;
++        if (typeof argv.o === 'string') {
++            openUrl += argv.o[0] === '/' ? argv.o : '/' + argv.o;
++        }
++        openUrl += "/dist";
++        opener(openUrl);
+     }
+   });
+ }
