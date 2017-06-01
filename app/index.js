@@ -3,6 +3,7 @@
  */
 const Generator = require("yeoman-generator");
 const chalk = require('chalk');
+const inquirer = require('inquirer');
 
 module.exports = class extends Generator {
     constructor(args, opts) {
@@ -12,6 +13,7 @@ module.exports = class extends Generator {
             this.installLess = false;
             this.installSass = false;
             this.installBootstrap = false;
+            this.javascript = false;
             this.installGit = false;
             this.runNPM = false;
     }
@@ -37,6 +39,36 @@ module.exports = class extends Generator {
                 message: "Would you like to enable Bootstrap 3?"
             },
             {
+                type: "expand",
+                name: "javascript",
+                message: "Will you use Javascript with modules/frameworks?",
+                choices: [
+
+                    {
+                        key: 'y',
+                        name: chalk.yellow('ES6 with Rollup.js'),
+                        value: 'rollup'
+                    },
+                    {
+                        key: 'n',
+                        name: chalk.red('No javascript'),
+                        value: 'no'
+                    },
+                    new inquirer.Separator(),
+                    {
+                        key: 'v',
+                        name: chalk.green('Vue.js') + chalk.grey(' (Reactive, component-oriented view layer for modern web interfaces)'),
+                        value: 'vue'
+                    },
+                    {
+                        key: 'p',
+                        name: chalk.green('Preact') + chalk.grey(' (Fast 3kb React alternative with the same ES6 API)'),
+                        value: 'preact'
+                    },
+
+                ]
+            },
+            {
                 type: "confirm",
                 name: "git",
                 message: "Would you like to use Git?"
@@ -49,12 +81,14 @@ module.exports = class extends Generator {
             ]).then(
                 (answers) => {
                     this.projectName = answers.name;
-                    this.log("App name", chalk.red(this.projectName));
-                    this.log("CSS Framework", chalk.red(answers.css));
+                    this.log("App name", chalk.yellow(this.projectName));
+                    this.log("CSS Framework", chalk.yellow(answers.css));
+                    this.log("Javascript", chalk.red(answers.javascript));
 
                     this.installLess = answers.css === "Less";
                     this.installSass = answers.css === "Sass";
                     this.installBootstrap = answers.bootstrap;
+                    this.javascript = answers.javascript !== "no";
                     this.installGit = answers.git;
                     this.runNPM = answers.npm;
 
@@ -76,18 +110,22 @@ module.exports = class extends Generator {
     writing() {
         this.fs.copyTpl(
             this.templatePath("npm/package.json"),
-            this.destinationPath(`package.json`),
+            this.destinationPath("package.json"),
             {
-                projectName:  this.projectName,
+                projectName: this.projectName,
                 less: this.installLess,
                 sass: this.installSass,
-                bootsrap: this.installBootstrap
+                bootsrap: this.installBootstrap,
+                javascript: this.javascript
             }
         );
 
         this.fs.copyTpl(
             this.templatePath("pug/index.pug"),
-            this.destinationPath("src/pug/index.pug")
+            this.destinationPath("src/pug/index.pug"),
+            {
+                javascript: this.javascript
+            }
         );
 
         if (this.installLess) {
@@ -118,6 +156,33 @@ module.exports = class extends Generator {
             this.fs.copyTpl(
                 this.templatePath("sass/mobile.scss"),
                 this.destinationPath("src/sass/mobile.scss")
+            );
+        }
+
+        if (this.javascript) {
+            // Rollup
+            this.fs.copyTpl(
+                this.templatePath("rollup/rollup.config.js"),
+                this.destinationPath("rollup.config.js"),
+                {
+                    projectName: this.projectName
+                }
+            );
+            /* Javascript ES6 modules */
+            // main
+            this.fs.copyTpl(
+                this.templatePath("javascript/main.js"),
+                this.destinationPath("src/javascript/main.js")
+            );
+            // handlers
+            this.fs.copyTpl(
+                this.templatePath("javascript/handlers.js"),
+                this.destinationPath("src/javascript/handlers.js")
+            );
+            // models
+            this.fs.copyTpl(
+                this.templatePath("javascript/models.js"),
+                this.destinationPath("src/javascript/models.js")
             );
         }
     }

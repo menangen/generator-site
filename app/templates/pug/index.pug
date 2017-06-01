@@ -8,8 +8,8 @@ html(lang="en")
         link(rel="stylesheet", href="css/styles.css")
         title
         script(type='text/javascript').
-            if (foo) {
-                bar(1 + 5)
+            if (true) {
+                console.warn("remove me!")
             }
     body
 
@@ -18,4 +18,5 @@ html(lang="en")
                 .col-md-12
                     p(@click="vueClickHandler")
                         h1 Jade
-                        span Node.js template engine
+                        span Node.js template engine<% if (javascript) { %>
+    script(src="js/bundle.js")<% } %>
