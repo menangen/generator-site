@@ -28,6 +28,7 @@
     "rollup-watch": "^3.2.2",<% if (javascript === 'vue' || javascript === 'preact') { %>
     "rollup-plugin-node-resolve": "^3.0.0",<% if (javascript === 'vue') { %>
     "rollup-plugin-vue": "^2.4.0",
+    "rollup-plugin-replace": "^1.1.1",
     "vue": "^2.3.3",<% } %><% if (javascript === 'preact') { %>
     "rollup-plugin-babel": "^2.7.1",
     "babel-plugin-transform-react-jsx": "^6.24.1",
