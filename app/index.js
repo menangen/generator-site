@@ -75,7 +75,7 @@ module.exports = class extends Generator {
 
     writing() {
         this.fs.copyTpl(
-            this.templatePath("package.json"),
+            this.templatePath("npm/package.json"),
             this.destinationPath(`package.json`),
             {
                 projectName:  this.projectName,
@@ -86,13 +86,13 @@ module.exports = class extends Generator {
         );
 
         this.fs.copyTpl(
-            this.templatePath("index.pug"),
+            this.templatePath("pug/index.pug"),
             this.destinationPath("src/pug/index.pug")
         );
 
         if (this.installLess) {
             this.fs.copyTpl(
-                this.templatePath("styles.less"),
+                this.templatePath("less/styles.less"),
                 this.destinationPath("src/less/styles.less"),
                 {
                     bootsrap: this.installBootstrap
@@ -100,7 +100,7 @@ module.exports = class extends Generator {
             );
             if (this.installBootstrap) {
                 this.fs.copyTpl(
-                    this.templatePath("bootstrap.less"),
+                    this.templatePath("less/bootstrap.less"),
                     this.destinationPath("src/less/bootstrap.less")
                 );
             }
@@ -109,14 +109,14 @@ module.exports = class extends Generator {
 
         if (this.installSass) {
             this.fs.copyTpl(
-                this.templatePath("styles.scss"),
+                this.templatePath("sass/styles.scss"),
                 this.destinationPath("src/sass/styles.scss"),
                 {
                     bootsrap: this.installBootstrap
                 }
             );
             this.fs.copyTpl(
-                this.templatePath("mobile.scss"),
+                this.templatePath("sass/mobile.scss"),
                 this.destinationPath("src/sass/mobile.scss")
             );
         }
