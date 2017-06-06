@@ -24,7 +24,7 @@ module.exports = class extends Generator {
             {
                 type: "input",
                 name: "name",
-                message: "New folder and project name:",
+                message: "Please type the project name:",
                 default: this.appname // Default to current folder name
             },
             {
@@ -45,15 +45,15 @@ module.exports = class extends Generator {
                 message:
                     "Would you like to setup Javascript with Rollup and js Framework?\n" +
                     chalk.yellow(
-                        'Rollup (y)\t'
+                        'Rollup JS modules (y)\t'
                     )
                     +chalk.red(
-                        'No javascript (n)\t'
+                        'Not use javascript (n)\t'
                     )
                     +chalk.green(
-                        'Vue (v)\t'
+                        'Vue + Rollup (v)\t'
                     )
-                    +chalk.green('Preact (p)\n'),
+                    +chalk.green('Preact + Rollup (p)\n'),
                 choices: [
 
                     {
@@ -136,6 +136,7 @@ module.exports = class extends Generator {
             this.templatePath("pug/index.pug"),
             this.destinationPath("src/pug/index.pug"),
             {
+                projectName: this.projectName,
                 javascript: this.javascript
             }
         );
@@ -165,6 +166,14 @@ module.exports = class extends Generator {
                     bootsrap: this.installBootstrap
                 }
             );
+
+            if (this.installBootstrap) {
+                this.fs.copyTpl(
+                    this.templatePath("sass/bootstrap.sass"),
+                    this.destinationPath("src/sass/bootstrap.sass")
+                );
+            }
+
             this.fs.copyTpl(
                 this.templatePath("sass/mobile.scss"),
                 this.destinationPath("src/sass/mobile.scss")
@@ -212,6 +221,10 @@ module.exports = class extends Generator {
                     {
                         projectName: this.projectName
                     }
+                );
+                this.fs.copyTpl(
+                    this.templatePath("javascript/components/time.vue"),
+                    this.destinationPath("src/javascript/components/time.vue")
                 );
             }
         }

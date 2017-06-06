@@ -6,18 +6,18 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1")
 
         link(rel="stylesheet", href="css/styles.css")
-        title
+        title <%= projectName %> Website<% if (!javascript) { %>
         script(type='text/javascript').
             function draw(){const e=document.createElement("canvas")
             if(e.width=150,e.height=150,e.getContext){const t=e.getContext("2d")
             t.strokeStyle="#1e284d";t.fillStyle="#c6bfee";t.fillRect(25,25,100,100);t.strokeRect(50,50,50,50)}
             else alert("No canvas!");document.body.appendChild(e)}
-
-    body(onload="draw()")
-        .container
+<% } %>
+    body<% if (!javascript) { %>(onload="draw()")<% } %>
+        .container<% if (javascript === 'vue') { %>#app<% } %>
             .row
                 .col-md-12
-                    p(@click="vueClickHandler")
+                    p
                         h1 Jade
                         span Node.js template engine<% if (javascript) { %>
     script(src="js/bundle.js")<% } %>

@@ -7,13 +7,15 @@ export default {
     format: 'umd',
     useStrict: false,
     moduleName: '<%= projectName %>',
+    sourceMap: true,
     dest: 'dist/js/bundle.js'<% if (javascript === 'vue' || javascript === 'preact') { %>,
     plugins: [<% if (javascript === 'vue') { %>
         vue({compileTemplate: true}),
         replace({
-            'process.env.NODE_ENV': JSON.stringify('production')
+            'process.env.NODE_ENV': JSON.stringify('development')// or "production"
         }),<% } %><% if (javascript === 'preact') { %>
         babel({
+            exclude: 'node_modules/**',
             plugins: [
                 ["transform-react-jsx", { "pragma": "h" }]// default pragma is preact.h
             ]}),<% } %>

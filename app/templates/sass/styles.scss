@@ -2,8 +2,13 @@
 @import "mobile";
 
 $green-grass: #AF0;
-$violet: #a643f9;
+$violet: #212;
 $orange: #F90;
+
+BODY {
+  color: $orange;
+  background-color: $violet;
+}
 
 h1 {
   color: #7b92a8;

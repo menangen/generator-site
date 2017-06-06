@@ -9,10 +9,10 @@
     "serve": "http-server --silent -c 1 -o",<% if (javascript) { %>
     "js": "rollup -c --sourcemap",
     "js:watch": "rollup -c -w --sourcemap",<% } %><% if (less) { %>
-    "less": "lessc src/less/styles.less dist/css/styles.css --source-map<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>",
+    "less": "lessc src/less/styles.less dist/css/styles.css --source-map --clean-css='--s1 --advanced'<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>",
     "less:watch": "./node_modules/.bin/watch --interval=0.3 'echo Less files compiling && lessc src/less/styles.less dist/css/styles.css --source-map<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>' src/less",<% } %><% if (sass) { %>
-    "sass": "node-sass src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",
-    "sass:watch": "node-sass --watch src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",<% } %>
+    "sass": "node-sass --output-style compressed src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",
+    "sass:watch": "node-sass --output-style compressed --source-map-embed --source-map-root=/ --watch src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",<% } %>
     "watch": "concurrently \"npm run <% if (less) { %>less<% } %><% if (sass) { %>sass<% } %>:watch\"<% if (javascript) { %> \"npm run js:watch\"<% } %> \"npm run pug:watch\"",
     "build": "npm run pug && npm run <% if (less) { %>less<% } %><% if (sass) { %>sass<% } %><% if (javascript) { %> && npm run js<% } %>"
   },
@@ -20,6 +20,7 @@
   "license": "ISC",
   "devDependencies": {<% if (less) { %>
     "less": "^2.7.2",
+    "less-plugin-clean-css": "^1.5.1",
     "watch": "^1.0.2",<% if (bootsrap) { %>
     "bootstrap-less": "^3.3.8",<% }} %><% if (sass) { %>
     "node-sass": "^4.5.3",<% if (bootsrap) { %>

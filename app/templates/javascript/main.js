@@ -4,20 +4,20 @@ import App from "./components/app.vue"
 
 new Vue({
     el: '#app',
-    render: function (createElement) {
+    render: createElement => {
         return createElement(App)
     }
 });
 <% } %><% if (javascript === 'preact') { %>import { h, render } from 'preact';
 
 render((
-    <div id="foo">
+    <div id="app">
         <span>Hello, <%= projectName %>!</span>
-        <button onClick={ e => alert("hi!") }>Click Me</button>
+        <button onClick={ e => alert("Hello, from <%= projectName %>!") }>Click Me</button>
         <p>
-            <a href="#">Test link</a>
+            <a href="#">Inline anchor</a>
         </p>
     </div>
 ), document.body);
 <% } %>
-document.addEventListener("DOMContentLoaded", handlers.loadComplete);
+document.addEventListener("DOMContentLoaded", handlers.loadComplete, false);
