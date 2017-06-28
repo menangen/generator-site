@@ -8,5 +8,8 @@ How to setup:
  5. Link global generator into system `sudo npm link` for **Linux/Mac** or `npm link` for **Windows**
 
 > **Note:**
-
 > - Use admin rights for Installation **yo** and **generator-site** into your system *(Windows or Mac)*
+
+6. Create a new folder and run in terminal command like `mkdir project && cd project`
+7. For start generator in *project* folder and setup project: `yo site`
+8. Then you have to setup npm environment: `npm install`
