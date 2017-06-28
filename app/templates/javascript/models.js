@@ -1,1 +1,1 @@
-export default 'hello <%= projectName %>!';
+export default "hello <%= projectName %>!";

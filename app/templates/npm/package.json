@@ -1,14 +1,15 @@
 {
   "name": "<%= projectName %>",
   "version": "0.1.0",
-  "description": "Rollup based Website",
-  "main": "rollup.config.js",
+  "description": "Rollup based Website",<% if (javascript) { %>
+  "main": "src/javascript/main.js",<% } %>
   "scripts": {
     "pug": "pug src/pug/ --out dist/ --pretty",
     "pug:watch": "pug --out dist/ --pretty --watch src/pug/",
     "serve": "http-server --silent -c 1 -o",<% if (javascript) { %>
     "js": "rollup -c --sourcemap",
-    "js:watch": "rollup -c -w --sourcemap",<% } %><% if (less) { %>
+    "js:watch": "rollup -c -w --sourcemap",
+    "lint": "eslint --format codeframe --ext .js<% if (javascript === 'vue') { %>,.vue<% } %><% if (javascript === 'preact') { %>,.jsx<% } %> src/javascript || exit 0",<% } %><% if (less) { %>
     "less": "lessc src/less/styles.less dist/css/styles.css --source-map --clean-css='--s1 --advanced'<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>",
     "less:watch": "./node_modules/.bin/watch --interval=0.3 'echo Less files compiling && lessc src/less/styles.less dist/css/styles.css --source-map<% if (bootsrap) { %> --include-path=node_modules/bootstrap-less<% } %>' src/less",<% } %><% if (sass) { %>
     "sass": "node-sass --output-style compressed src/sass/styles.scss dist/css/styles.css<% if (bootsrap) { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",
@@ -26,13 +27,16 @@
     "node-sass": "^4.5.3",<% if (bootsrap) { %>
     "bootstrap-sass": "^3.3.7",<% }} %><% if (javascript) { %>
     "rollup": "^0.41.6",
-    "rollup-watch": "^3.2.2",<% if (javascript === 'vue' || javascript === 'preact') { %>
+    "rollup-watch": "^3.2.2",
+    "eslint": "^4.1.1",<% if (javascript === 'vue' || javascript === 'preact') { %>
     "rollup-plugin-node-resolve": "^3.0.0",<% if (javascript === 'vue') { %>
     "rollup-plugin-vue": "^2.4.0",
     "rollup-plugin-replace": "^1.1.1",
+    "eslint-plugin-vue": "^2.1.0",
     "vue": "^2.3.3",<% } %><% if (javascript === 'preact') { %>
     "rollup-plugin-babel": "^2.7.1",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "eslint-plugin-react": "^7.1.0",
     "preact": "^8.1.0",<% }}} %>
     "http-server": "^0.10.0",
     "concurrently": "^3.4.0",

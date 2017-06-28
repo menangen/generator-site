@@ -1,4 +1,4 @@
-import message from './models'
+import message from "./models"
 
 export default {
     loadComplete() {

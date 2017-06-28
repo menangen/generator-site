@@ -93,9 +93,11 @@ module.exports = class extends Generator {
             ]).then(
                 (answers) => {
                     this.projectName = answers.name;
-                    this.log("App name", chalk.yellow(this.projectName));
-                    this.log("CSS Framework", chalk.yellow(answers.css));
-                    this.log("Javascript", chalk.red(answers.javascript));
+                    this.log("App name", chalk.blue.underline.bold(this.projectName));
+                    this.log("CSS Framework", chalk.black.bgMagenta(
+                        answers.css + (answers.bootstrap ? " with Boostrap 3" : ""))
+                    );
+                    this.log("Javascript", chalk.black.bgYellow(answers.javascript));
 
                     this.installLess = answers.css === "Less";
                     this.installSass = answers.css === "Sass";
@@ -190,6 +192,14 @@ module.exports = class extends Generator {
                     javascript: this.javascript
                 }
             );
+            // Eslint
+            this.fs.copyTpl(
+                this.templatePath("eslint/.eslintrc.js"),
+                this.destinationPath(".eslintrc.js"),
+                {
+                    javascript: this.javascript
+                }
+            );
             /* Javascript ES6 modules */
             // main
             this.fs.copyTpl(
@@ -232,7 +242,14 @@ module.exports = class extends Generator {
 
     install() {
         if (this.installGit) {
-            this.spawnCommand("git", ["add", "package.json", "src/"]);
+            const gitTrackingFiles = ["add", "src/", "package.json"];
+
+            if (this.javascript) {
+                gitTrackingFiles.push("rollup.config.js");
+                gitTrackingFiles.push(".eslintrc.js");
+            }
+
+            this.spawnCommand("git", gitTrackingFiles);
         }
 
         if (this.runNPM) this.npmInstall();
@@ -253,7 +270,7 @@ module.exports = class extends Generator {
             patchProcess.stdin.end();
         }
         else {
-            this.log('http-server": "^0.10.0" has URL opening bug on Safari ', chalk.yellow("https://github.com/craigmichaelmartin/http-server/commit/1779827b911d7149d9918c1ba4881a583f77b841#diff-4ede5aceb32bc9cc9c1a5923aac46bda"));
+            this.log('http-server": "^0.10.0" has URL opening bug on Safari ', chalk.yellow("goo.gl/gRQSSW"));
         }
     }
 };
