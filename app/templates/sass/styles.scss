@@ -1,5 +1,6 @@
-<% if (bootsrap) { %>@import "bootstrap";<% } %>
-@import "mobile";
+<% if (css === 'bootstrap') { %>@import "bootstrap";
+<% } %><% if (css === 'ungrid') { %>@import "ungrid";
+<% } %>@import "mobile";
 
 $green-grass: #AF0;
 $violet: #212;

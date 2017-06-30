@@ -11,9 +11,8 @@ module.exports = class extends Generator {
         // Calling the super constructor is important so our generator is correctly set up
         super(args, opts);
             this.projectName = "website";
-            this.installLess = false;
-            this.installSass = false;
-            this.installBootstrap = false;
+            this.preprocessor = false;
+            this.css = false;
             this.javascript = false;
             this.installGit = false;
             this.runNPM = false;
@@ -29,43 +28,46 @@ module.exports = class extends Generator {
             },
             {
                 type: "list",
-                name: "css",
+                name: "preprocessor",
                 message: "Please select preprocesor:",
-                choices: ["Less", "Sass"],
-                default: 0 // Default Less
+                choices: ["Less.js", "Sass (node-sass)"],
+                default: 0 // Default is Less
             },
             {
-                type: "confirm",
-                name: "bootstrap",
-                message: "Would you like to enable Bootstrap 3?"
+                type: "list",
+                name: "css",
+                message: "Would you like to use CSS Framework like Twitter Bootstrap?",
+                choices: ["Without any css framework", "Bootstrap 3", "ungrid (ultra minimal flexbox)"],
+                default: 0
             },
             {
                 type: "expand",
                 name: "javascript",
                 message:
                     "Would you like to setup Javascript with Rollup and js Framework?\n" +
-                    chalk.yellow(
-                        'Rollup JS modules (y)\t'
+                    chalk.red(
+                        "Without javascript (n)\t"
                     )
-                    +chalk.red(
-                        'Not use javascript (n)\t'
+                    +chalk.yellow(
+                        "ES6 Rollup JS modules (y)\t"
                     )
                     +chalk.green(
-                        'Vue + Rollup (v)\t'
+                        "Vue + ES6 Rollup (v)\t"
                     )
-                    +chalk.green('Preact + Rollup (p)\n'),
-                choices: [
+                    +chalk.green("Preact + ES6 Rollup (p)\n"),
 
-                    {
-                        key: 'y',
-                        name: chalk.yellow('ES6 with Rollup.js'),
-                        value: 'rollup'
-                    },
+                choices: [
                     {
                         key: 'n',
                         name: chalk.red('No javascript'),
                         value: 'no'
                     },
+                    {
+                        key: 'y',
+                        name: chalk.yellow('ES6 with Rollup.js'),
+                        value: 'rollup'
+                    },
+
                     new inquirer.Separator(),
                     {
                         key: 'v',
@@ -93,20 +95,53 @@ module.exports = class extends Generator {
             ]).then(
                 (answers) => {
                     this.projectName = answers.name;
-                    this.log("App name", chalk.blue.underline.bold(this.projectName));
-                    this.log("CSS Framework", chalk.black.bgMagenta(
-                        answers.css + (answers.bootstrap ? " with Boostrap 3" : ""))
-                    );
-                    this.log("Javascript", chalk.black.bgYellow(answers.javascript));
 
-                    this.installLess = answers.css === "Less";
-                    this.installSass = answers.css === "Sass";
-                    this.installBootstrap = answers.bootstrap;
-                    this.javascript = answers.javascript !== "no" ? answers.javascript: false;
+                    switch (answers.preprocessor) {
+                        case "Less.js":
+                            this.preprocessor = "less";
+                            break;
+                        case "Sass (node-sass)":
+                            this.preprocessor = "sass";
+                            break;
+                    }
+
+                    switch (answers.css) {
+                        case "Without any css framework":
+                            this.css = false;
+                            break;
+                        case "Bootstrap 3":
+                            this.css = "bootstrap";
+                            break;
+                        case "ungrid (ultra minimal flexbox)":
+                            this.css = "ungrid";
+                            break;
+                    }
+
+                    this.javascript = answers.javascript !== "no" ? answers.javascript : false;
                     this.installGit = answers.git;
                     this.runNPM = answers.npm;
 
-                    if (this.installBootstrap) this.log("Bootstrap 3 included as npm module");
+                    this.log("App name", chalk.blue.underline.bold(this.projectName));
+                    this.log("CSS Preprocessor", chalk.black.bgMagenta(this.preprocessor));
+                    if (this.css) this.log(chalk.black.bgMagenta(this.css + " included as npm module"));
+
+                    let withColor;
+                    switch (answers.javascript) {
+                        case "no":
+                            withColor = chalk.black.bgRed;
+                            break;
+                        case "vue":
+                        case "react":
+                            withColor = chalk.black.bgGreen;
+                            break;
+                        default:
+                            withColor = chalk.black.bgYellow;
+                            break
+                    }
+
+                    this.log("Javascript", withColor(answers.javascript));
+
+
                 });
     }
 
@@ -127,9 +162,8 @@ module.exports = class extends Generator {
             this.destinationPath("package.json"),
             {
                 projectName: this.projectName,
-                less: this.installLess,
-                sass: this.installSass,
-                bootsrap: this.installBootstrap,
+                preprocessor: this.preprocessor,
+                css: this.css,
                 javascript: this.javascript
             }
         );
@@ -143,37 +177,54 @@ module.exports = class extends Generator {
             }
         );
 
-        if (this.installLess) {
+        if (this.preprocessor === "less") {
             this.fs.copyTpl(
                 this.templatePath("less/styles.less"),
                 this.destinationPath("src/less/styles.less"),
                 {
-                    bootsrap: this.installBootstrap
+                    css: this.css
                 }
             );
-            if (this.installBootstrap) {
-                this.fs.copyTpl(
-                    this.templatePath("less/bootstrap.less"),
-                    this.destinationPath("src/less/bootstrap.less")
-                );
+
+            switch (this.css) {
+                case "bootstrap":
+                    this.fs.copyTpl(
+                        this.templatePath("less/bootstrap.less"),
+                        this.destinationPath("src/less/bootstrap.less")
+                    );
+                    break;
+                case "ungrid":
+                    this.fs.copyTpl(
+                        this.templatePath("less/ungrid.less"),
+                        this.destinationPath("src/less/ungrid.less")
+                    );
+                    break;
             }
         }
 
 
-        if (this.installSass) {
+        if (this.preprocessor === "sass") {
             this.fs.copyTpl(
                 this.templatePath("sass/styles.scss"),
                 this.destinationPath("src/sass/styles.scss"),
                 {
-                    bootsrap: this.installBootstrap
+                    css: this.css
                 }
             );
 
-            if (this.installBootstrap) {
-                this.fs.copyTpl(
-                    this.templatePath("sass/bootstrap.sass"),
-                    this.destinationPath("src/sass/bootstrap.sass")
-                );
+            switch (this.css) {
+                case "bootstrap":
+                    this.fs.copyTpl(
+                        this.templatePath("sass/bootstrap.sass"),
+                        this.destinationPath("src/sass/bootstrap.sass")
+                    );
+                    break;
+                case "ungrid":
+                    this.fs.copyTpl(
+                        this.templatePath("sass/ungrid.scss"),
+                        this.destinationPath("src/sass/ungrid.scss")
+                    );
+                    break;
             }
 
             this.fs.copyTpl(
@@ -200,7 +251,7 @@ module.exports = class extends Generator {
                     javascript: this.javascript
                 }
             );
-            /* Javascript ES6 modules */
+            // Javascript ES6 modules
             // main
             this.fs.copyTpl(
                 this.templatePath("javascript/main.js"),

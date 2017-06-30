@@ -13,3 +13,9 @@ How to setup:
 6. Create a new folder and run in terminal command like `mkdir project && cd project`
 7. For start generator in *project* folder and setup project: `yo site`
 8. Then you have to setup npm environment: `npm install`
+
+How to use:
+===================
+
+ 1. Prepare folder by `mkdir project && cd project`
+ 2. Run generator by `yo site`
