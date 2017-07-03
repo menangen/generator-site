@@ -17,6 +17,19 @@ module.exports = class extends Generator {
             this.javascript = false;
             this.installGit = false;
             this.runNPM = false;
+
+            this.vendor = {
+                preprocessors: {
+                    less: "Less.js",
+                    sass: "Sass (node-sass)"
+                },
+                cssFrameworks: {
+                    bootstrap: "Bootstrap 3",
+                    ungrid: "ungrid (ultra minimal table like grid)",
+                    miniCSS: "mini.css (minimal, responsive, style-agnostic)",
+                    bulma: "Bulma (based on modern Flexbox)"
+                }
+            }
     }
 
     prompting() {
@@ -31,7 +44,7 @@ module.exports = class extends Generator {
                 type: "list",
                 name: "preprocessor",
                 message: "Please select preprocesor:",
-                choices: ["Less.js", "Sass (node-sass)"],
+                choices: [this.vendor.preprocessors.less, this.vendor.preprocessors.sass],
                 default: 0 // Default is Less
             },
             {
@@ -40,9 +53,10 @@ module.exports = class extends Generator {
                 message: "Would you like to use CSS Framework like Twitter Bootstrap?",
                 choices: [
                     "Without any css framework",
-                    "ungrid (ultra minimal table like grid)",
-                    "mini.css",
-                    "Bootstrap 3"
+                    this.vendor.cssFrameworks.ungrid,
+                    this.vendor.cssFrameworks.miniCSS,
+                    this.vendor.cssFrameworks.bulma,
+                    this.vendor.cssFrameworks.bootstrap
                 ],
                 default: 0
             },
@@ -103,27 +117,39 @@ module.exports = class extends Generator {
                     this.projectName = answers.name;
 
                     switch (answers.preprocessor) {
-                        case "Less.js":
+                        case this.vendor.preprocessors.less:
                             this.preprocessor = "less";
                             break;
-                        case "Sass (node-sass)":
+                        case this.vendor.preprocessors.sass:
                             this.preprocessor = "sass";
                             break;
                     }
 
                     switch (answers.css) {
 
-                        case "Bootstrap 3":
-                            this.css = "bootstrap";
-                            this.includePath.less = "node_modules/bootstrap-less";
-                            this.includePath.sass = "node_modules/bootstrap-sass/assets/stylesheets";
-                            break;
-                        case "ungrid (ultra minimal table like grid)":
+                        case this.vendor.cssFrameworks.ungrid:
+
                             this.css = "ungrid";
                             break;
-                        case "mini.css":
+
+                        case this.vendor.cssFrameworks.miniCSS:
+
                             this.css = "mini";
                             this.includePath.sass = "node_modules/mini.css/src";
+                            break;
+
+                        case this.vendor.cssFrameworks.bulma:
+
+                            this.css = "bulma";
+                            this.includePath.sass = "node_modules/bulma";
+                            break;
+
+                        case this.vendor.cssFrameworks.bootstrap:
+
+                            this.css = "bootstrap";
+
+                            this.includePath.less = "node_modules/bootstrap-less";
+                            this.includePath.sass = "node_modules/bootstrap-sass/assets/stylesheets";
                             break;
 
                         default:
@@ -224,7 +250,6 @@ module.exports = class extends Generator {
             }
         }
 
-
         if (this.preprocessor === "sass") {
             this.fs.copyTpl(
                 this.templatePath("sass/styles.scss"),
@@ -239,6 +264,13 @@ module.exports = class extends Generator {
                     this.fs.copyTpl(
                         this.templatePath("sass/bootstrap.sass"),
                         this.destinationPath("src/sass/bootstrap.sass")
+                    );
+                    break;
+
+                case "bulma":
+                    this.fs.copyTpl(
+                        this.templatePath("sass/bulma.sass"),
+                        this.destinationPath("src/sass/bulma.sass")
                     );
                     break;
 

@@ -1,4 +1,5 @@
 <% if (css === 'bootstrap') { %>@import "bootstrap";
+<% } %><% if (css === 'bulma') { %>@import "bulma";
 <% } %><% if (css === 'ungrid') { %>@import "ungrid";
 <% } %><% if (css === 'mini') { %>@import "mini";
 <% } %>@import "mobile";

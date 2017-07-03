@@ -26,7 +26,8 @@
     "bootstrap-less": "^3.3.8",<% }} %><% if (preprocessor == 'sass') { %>
     "node-sass": "^4.5.3",<% if (css === 'bootstrap') { %>
     "bootstrap-sass": "^3.3.7",<% } %><% if (css === 'mini') { %>
-    "mini.css": "^2.3.2",<% }} %><% if (javascript) { %>
+    "mini.css": "^2.3.2",<% } %><% if (css === 'bulma') { %>
+    "bulma": "^0.4.2",<% }} %><% if (javascript) { %>
     "rollup": "^0.41.6",
     "rollup-watch": "^3.2.2",
     "eslint": "^4.1.1",<% if (javascript === 'vue' || javascript === 'preact') { %>

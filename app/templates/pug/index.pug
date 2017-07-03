@@ -5,14 +5,13 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1")
 
-        <% if (preprocessor === 'less' && css === 'mini') { %>link(rel="stylesheet", href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css")
-        <% } %>link(rel="stylesheet", href="css/styles.css")
+        <% if (preprocessor === 'less') { %><% if (css === 'mini') { %>link(rel="stylesheet", href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css")<% } %><% if (css === 'bulma') { %>link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css")
+        <% }} %>link(rel="stylesheet", href="css/styles.css")
         title <%= projectName %> Website<% if (!javascript) { %>
         script(type='text/javascript').
-            function draw(){const e=document.createElement("canvas")
-            if(e.width=150,e.height=150,e.getContext){const t=e.getContext("2d")
-            t.strokeStyle="#1e284d";t.fillStyle="#c6bfee";t.fillRect(25,25,100,100);t.strokeRect(50,50,50,50)}
-            else alert("No canvas!");document.body.appendChild(e)}
+            function draw(){const c = document.createElement("canvas");
+            if(c.width = 256, c.height = 256, c.getContext){const x = c.getContext("2d");x.beginPath();x.moveTo(0, 0);x.lineTo(256, 0);x.lineTo(256, 256);x.lineTo(0, 256);x.closePath();x.clip();x.scale(1, 1);x.translate(0, 0);x.strokeStyle = "rgba(0,0,0,0)";x.lineCap = "butt";x.lineJoin = "miter";x.miterLimit = 4;x.save();x.save();x.fillStyle = "#f7df1e";x.beginPath();x.moveTo(0, 0);x.lineTo(256, 0);x.lineTo(256, 256);x.lineTo(0, 256);x.lineTo(0, 0);x.closePath();x.fill();x.stroke();x.restore();x.save();x.fillStyle = "#000000";x.beginPath();x.moveTo(67.311746, 213.932292);x.lineTo(86.902654, 202.076241);x.bezierCurveTo(90.6821079, 208.777346, 94.1202286, 214.447137, 102.367086, 214.447137);x.bezierCurveTo(110.272203, 214.447137, 115.256076, 211.354819, 115.256076, 199.326883);x.lineTo(115.256076, 117.528787);x.lineTo(139.313575, 117.528787);x.lineTo(139.313575, 199.666997);x.bezierCurveTo(139.313575, 224.58433, 124.707759, 235.925943, 103.3984, 235.925943);x.bezierCurveTo(84.1532952, 235.925943, 72.9819429, 225.958603, 67.3113397, 213.93026);x.fill();x.stroke();x.restore();x.save();x.fillStyle = "#000000";x.beginPath();x.moveTo(152.380952, 211.354413);x.lineTo(171.969422, 200.0128);x.bezierCurveTo(177.125994, 208.433981, 183.827911, 214.619835, 195.684368, 214.619835);x.bezierCurveTo(205.652521, 214.619835, 212.009041, 209.635962, 212.009041, 202.762159);x.bezierCurveTo(212.009041, 194.513676, 205.479416, 191.592025, 194.481168, 186.78207);x.lineTo(188.468419, 184.202565);x.bezierCurveTo(171.111213, 176.81473, 159.597308, 167.53534, 159.597308, 147.944838);x.bezierCurveTo(159.597308, 129.901308, 173.344508, 116.153295, 194.825752, 116.153295);x.bezierCurveTo(210.119924, 116.153295, 221.117765, 121.48094, 229.021663, 135.400432);x.lineTo(210.29059, 147.428775);x.bezierCurveTo(206.166146, 140.040127, 201.699556, 137.119289, 194.826159, 137.119289);x.bezierCurveTo(187.78047, 137.119289, 183.312254, 141.587098, 183.312254, 147.428775);x.bezierCurveTo(183.312254, 154.646349, 187.78047, 157.568406, 198.089956, 162.036622);x.lineTo(204.103924, 164.614095);x.bezierCurveTo(224.553448, 173.378641, 236.067352, 182.313448, 236.067352, 202.418387);x.bezierCurveTo(236.067352, 224.071924, 219.055137, 235.927975, 196.200432, 235.927975);x.bezierCurveTo(173.860978, 235.927975, 159.425829, 225.274311, 152.381359, 211.354413);x.fill();x.stroke();x.restore();x.restore();x.restore()}
+            else alert("No canvas!");document.body.appendChild(c)}
 <% } %>
     body<% if (!javascript) { %>(onload="draw()")<% } %>
         .container<% if (javascript === 'vue') { %>#app<% } %>
