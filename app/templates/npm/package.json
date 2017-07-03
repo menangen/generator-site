@@ -1,7 +1,7 @@
 {
   "name": "<%= projectName %>",
   "version": "0.1.0",
-  "description": "Rollup based Website",<% if (javascript) { %>
+  "description": "<% if (javascript) { %>Rollup based <% } %>Website",<% if (javascript) { %>
   "main": "src/javascript/main.js",<% } %>
   "scripts": {
     "pug": "pug src/pug/ --out dist/ --pretty",
@@ -10,10 +10,10 @@
     "js": "rollup -c --sourcemap",
     "js:watch": "rollup -c -w --sourcemap",
     "lint": "eslint --format codeframe --ext .js<% if (javascript === 'vue') { %>,.vue<% } %><% if (javascript === 'preact') { %>,.jsx<% } %> src/javascript || exit 0",<% } %><% if (preprocessor === 'less') { %>
-    "less": "lessc src/less/styles.less dist/css/styles.css --source-map --clean-css='--s1 --advanced'<% if (css === 'bootstrap') { %> --include-path=node_modules/bootstrap-less<% } %>",
-    "less:watch": "./node_modules/.bin/watch --interval=0.3 'echo Less files compiling && lessc src/less/styles.less dist/css/styles.css --source-map<% if (css === 'bootstrap') { %> --include-path=node_modules/bootstrap-less<% } %>' src/less",<% } %><% if (preprocessor === 'sass') { %>
-    "sass": "node-sass --output-style compressed src/sass/styles.scss dist/css/styles.css<% if (css === 'bootstrap') { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",
-    "sass:watch": "node-sass --output-style compressed --source-map-embed --source-map-root=/ --watch src/sass/styles.scss dist/css/styles.css<% if (css === 'bootstrap') { %> --include-path node_modules/bootstrap-sass/assets/stylesheets<% } %>",<% } %>
+    "less": "lessc src/less/styles.less dist/css/styles.css --source-map --clean-css='--s1 --advanced'<% if (includePath.less) { %> --include-path=<%= includePath.less %><% } %>",
+    "less:watch": "./node_modules/.bin/watch --interval=0.3 'echo Less files compiling && lessc src/less/styles.less dist/css/styles.css --source-map<% if (includePath.less) { %> --include-path=<%= includePath.less %><% } %>' src/less",<% } %><% if (preprocessor === 'sass') { %>
+    "sass": "node-sass --output-style compressed src/sass/styles.scss dist/css/styles.css<% if (includePath.sass) { %> --include-path <%= includePath.sass %><% } %>",
+    "sass:watch": "node-sass --output-style compressed --source-map-embed --source-map-root=/ --watch src/sass/styles.scss dist/css/styles.css<% if (includePath.sass) { %> --include-path <%= includePath.sass %><% } %>",<% } %>
     "watch": "concurrently \"npm run <%= preprocessor %>:watch\"<% if (javascript) { %> \"npm run js:watch\"<% } %> \"npm run pug:watch\"",
     "build": "npm run pug && npm run <%= preprocessor %><% if (javascript) { %> && npm run js<% } %>"
   },
@@ -25,7 +25,8 @@
     "watch": "^1.0.2",<% if (css === 'bootstrap') { %>
     "bootstrap-less": "^3.3.8",<% }} %><% if (preprocessor == 'sass') { %>
     "node-sass": "^4.5.3",<% if (css === 'bootstrap') { %>
-    "bootstrap-sass": "^3.3.7",<% }} %><% if (javascript) { %>
+    "bootstrap-sass": "^3.3.7",<% } %><% if (css === 'mini') { %>
+    "mini.css": "^2.3.2",<% }} %><% if (javascript) { %>
     "rollup": "^0.41.6",
     "rollup-watch": "^3.2.2",
     "eslint": "^4.1.1",<% if (javascript === 'vue' || javascript === 'preact') { %>

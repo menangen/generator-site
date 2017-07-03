@@ -13,6 +13,7 @@ module.exports = class extends Generator {
             this.projectName = "website";
             this.preprocessor = false;
             this.css = false;
+            this.includePath = { less: "", sass: "" };
             this.javascript = false;
             this.installGit = false;
             this.runNPM = false;
@@ -37,7 +38,12 @@ module.exports = class extends Generator {
                 type: "list",
                 name: "css",
                 message: "Would you like to use CSS Framework like Twitter Bootstrap?",
-                choices: ["Without any css framework", "Bootstrap 3", "ungrid (ultra minimal flexbox)"],
+                choices: [
+                    "Without any css framework",
+                    "ungrid (ultra minimal table like grid)",
+                    "mini.css",
+                    "Bootstrap 3"
+                ],
                 default: 0
             },
             {
@@ -106,15 +112,22 @@ module.exports = class extends Generator {
                     }
 
                     switch (answers.css) {
-                        case "Without any css framework":
-                            this.css = false;
-                            break;
+
                         case "Bootstrap 3":
                             this.css = "bootstrap";
+                            this.includePath.less = "node_modules/bootstrap-less";
+                            this.includePath.sass = "node_modules/bootstrap-sass/assets/stylesheets";
                             break;
-                        case "ungrid (ultra minimal flexbox)":
+                        case "ungrid (ultra minimal table like grid)":
                             this.css = "ungrid";
                             break;
+                        case "mini.css":
+                            this.css = "mini";
+                            this.includePath.sass = "node_modules/mini.css/src";
+                            break;
+
+                        default:
+                            this.css = false;
                     }
 
                     this.javascript = answers.javascript !== "no" ? answers.javascript : false;
@@ -122,8 +135,14 @@ module.exports = class extends Generator {
                     this.runNPM = answers.npm;
 
                     this.log("App name", chalk.blue.underline.bold(this.projectName));
-                    this.log("CSS Preprocessor", chalk.black.bgMagenta(this.preprocessor));
-                    if (this.css) this.log(chalk.black.bgMagenta(this.css + " included as npm module"));
+
+                    if (this.css) {
+                        this.log(
+                            chalk.black.bgMagenta(
+                                this.css + " included in " + this.preprocessor + " code")
+                        )
+                    }
+                    else this.log("CSS Preprocessor", chalk.black.bgMagenta(this.preprocessor));
 
                     let withColor;
                     switch (answers.javascript) {
@@ -164,6 +183,7 @@ module.exports = class extends Generator {
                 projectName: this.projectName,
                 preprocessor: this.preprocessor,
                 css: this.css,
+                includePath: this.includePath,
                 javascript: this.javascript
             }
         );
@@ -173,6 +193,8 @@ module.exports = class extends Generator {
             this.destinationPath("src/pug/index.pug"),
             {
                 projectName: this.projectName,
+                preprocessor: this.preprocessor,
+                css: this.css,
                 javascript: this.javascript
             }
         );
@@ -219,10 +241,18 @@ module.exports = class extends Generator {
                         this.destinationPath("src/sass/bootstrap.sass")
                     );
                     break;
+
                 case "ungrid":
                     this.fs.copyTpl(
                         this.templatePath("sass/ungrid.scss"),
                         this.destinationPath("src/sass/ungrid.scss")
+                    );
+                    break;
+
+                case "mini":
+                    this.fs.copyTpl(
+                        this.templatePath("sass/mini.sass"),
+                        this.destinationPath("src/sass/mini.sass")
                     );
                     break;
             }

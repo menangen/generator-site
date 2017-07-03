@@ -1,5 +1,6 @@
 <% if (css === 'bootstrap') { %>@import "bootstrap";
 <% } %><% if (css === 'ungrid') { %>@import "ungrid";
+<% } %><% if (css === 'mini') { %>@import "mini";
 <% } %>@import "mobile";
 
 $green-grass: #AF0;
