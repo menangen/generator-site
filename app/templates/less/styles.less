@@ -1,6 +1,23 @@
 <% if (css === 'bootstrap') { %>@import "bootstrap";
 <% } %><% if (css === 'ungrid') { %>@import "ungrid";
-<% } %>@color: #f90;
+<% } %><% if (!css) { %>.flex() {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-flow: row;
+}
+
+.row {
+  .flex();
+
+  .col {
+    flex: auto;
+    width: 33.33%;
+  }
+}
+<% } %>
+@color: #f90;
 
 BODY {
   color: @color;

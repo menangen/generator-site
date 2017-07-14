@@ -16,8 +16,7 @@ html(lang="en")
     body<% if (!javascript) { %>(onload="draw()")<% } %>
         .container<% if (javascript === 'vue') { %>#app<% } %>
             .row
-                .col-md-12
-                    p
-                        h1 Jade
-                        span Node.js template engine<% if (javascript) { %>
+                <% if (css === 'bootstrap') { %>.col-md-12<% } else{ %>.col<% } %>
+                    h1 Jade
+                    span Node.js template engine<% if (javascript) { %>
     script(src="js/bundle.js")<% } %>

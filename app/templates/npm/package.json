@@ -30,7 +30,8 @@
     "bulma": "^0.4.2",<% }} %><% if (javascript) { %>
     "rollup": "^0.41.6",
     "rollup-watch": "^3.2.2",
-    "eslint": "^4.1.1",<% if (javascript === 'vue' || javascript === 'preact') { %>
+    "eslint": "^4.1.1",
+    "rollup-plugin-butternut": "^0.1.0",<% if (javascript === 'vue' || javascript === 'preact') { %>
     "rollup-plugin-node-resolve": "^3.0.0",<% if (javascript === 'vue') { %>
     "rollup-plugin-vue": "^2.4.0",
     "rollup-plugin-replace": "^1.1.1",

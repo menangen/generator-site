@@ -31,3 +31,5 @@ Other watching tasks
 > `npm run pug:watch`
 > `npm run less:watch`
 > `npm run js:watch`
+
+### All JS frameworks like Vue.js or Preact.js is included by Rollup in compiled `dist/js/bundle.js`
