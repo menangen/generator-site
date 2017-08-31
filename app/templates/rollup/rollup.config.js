@@ -1,6 +1,7 @@
 <% if (javascript === 'vue' || javascript === 'preact') { %>const nodeResolve = require("rollup-plugin-node-resolve");
 <% if (javascript === 'vue') { %>const vue = require("rollup-plugin-vue");
 const replace = require('rollup-plugin-replace');<% } %><% if (javascript === 'preact') { %>const babel = require("rollup-plugin-babel");<% }} %>
+const butternut = require("rollup-plugin-butternut");
 const production = process.env.NODE_ENV === "production";
 
 export default {
